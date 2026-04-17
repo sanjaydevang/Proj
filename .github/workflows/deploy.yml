@@ -11,29 +11,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy QA
         if: github.ref == 'refs/heads/qa'
         run: |
-          ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} '
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} '
             cd ~/apps/demo-app &&
             git pull origin qa &&
             docker compose up -d --build qa
           '
 
-      - name: Deploy Prod
+      - name: Deploy PROD
         if: github.ref == 'refs/heads/main'
         run: |
-          ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} '
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} '
             cd ~/apps/demo-app &&
             git pull origin main &&
             docker compose up -d --build prod
