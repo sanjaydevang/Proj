@@ -24,17 +24,17 @@ jobs:
       - name: Deploy QA
         if: github.ref == 'refs/heads/qa'
         run: |
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} '
-            cd ~/apps/demo-app/Proj &&
-            git pull origin qa &&
-            docker compose up -d --build qa
-          '
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} << 'EOF'
+          cd ~/apps/demo-app/Proj
+          git pull origin qa
+          docker compose up -d --build qa
+          EOF
 
       - name: Deploy PROD
         if: github.ref == 'refs/heads/main'
         run: |
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} '
-            cd ~/apps/demo-app/Proj &&
-            git pull origin main &&
-            docker compose up -d --build prod
-          '
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} << 'EOF'
+          cd ~/apps/demo-app/Proj
+          git pull origin main
+          docker compose up -d --build prod
+          EOF
