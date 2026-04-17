@@ -25,7 +25,7 @@ jobs:
         if: github.ref == 'refs/heads/qa'
         run: |
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} '
-            cd ~/apps/demo-app &&
+            cd ~/apps/demo-app/Proj &&
             git pull origin qa &&
             docker compose up -d --build qa
           '
@@ -34,7 +34,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} '
-            cd ~/apps/demo-app &&
+            cd ~/apps/demo-app/Proj &&
             git pull origin main &&
             docker compose up -d --build prod
           '
