@@ -1,0 +1,12 @@
+services:
+  qa:
+    build: .
+    container_name: qa-app
+    ports:
+      - "3001:80"
+
+  prod:
+    build: .
+    container_name: prod-app
+    ports:
+      - "3003:80"
